@@ -8,7 +8,7 @@ env-down:
 	@docker compose down todoapp-postgres
 
 env-cleanup:
-	@read -p "Очистить все volume файлы окружение? Опасность утери данных. [y/n]: " ans; if [ "$$ans" = "y" ]; then docker compose down todoapp-postgres && rm -rf out/pgdata && echo "Файлы окружения очищены"; else echo "Очистка окружения отменена"; fi
+	@read -p "Очистить все volume файлы окружение? Опасность утери данных. [y/n]: " ans; if [ "$$ans" = "y" ]; then docker compose down todoapp-postgres port-forwarder && rm -rf out/pgdata && echo "Файлы окружения очищены"; else echo "Очистка окружения отменена"; fi
 
 migrate-create:
 	@if [ -z "$(seq)" ]; then \
@@ -44,4 +44,10 @@ env-port-forward:
 	@docker compose up -d port-forwarder
 
 env-port-close:
-	@docker compose down port-forwarder 
+	@docker compose down port-forwarder
+
+todoapp-run:
+	@export FOLDER=${PROJECT_ROOT}/out/logs && \
+	export POSTGRES_HOST=localhost && \
+	go mod tidy && \
+	go run cmd/todoapp/main.go
