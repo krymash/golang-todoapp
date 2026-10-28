@@ -8,6 +8,7 @@ import (
 	"syscall"
 	"time"
 
+	_ "github.com/krymash/golang-todoapp/docs"
 	core_config "github.com/krymash/golang-todoapp/internal/core/config"
 	core_logger "github.com/krymash/golang-todoapp/internal/core/logger"
 	core_pgx_pool "github.com/krymash/golang-todoapp/internal/core/repository/postgres/pool/pgx"
@@ -25,6 +26,11 @@ import (
 	"go.uber.org/zap"
 )
 
+// @title Golang Todo API
+// @version 1.0
+// @description ToDo Application REST-API scheme
+// @host 127.0.0.1:5050
+// @BasePath /api/v1
 func main() {
 	cfg := core_config.NewConfigMust()
 	time.Local = cfg.TimeZone
@@ -88,6 +94,9 @@ func main() {
 	//apiVersionRouterV2.RegisterRoutes(usersTransportHTTP.Routes()...)
 
 	httpServer.RegsiterAPIRouters(apiVersionRouterV1)
+
+	httpServer.RegisterSwagger()
+
 	if err := httpServer.Run(ctx); err != nil {
 		logger.Error("HTTP server run error", zap.Error(err))
 	}

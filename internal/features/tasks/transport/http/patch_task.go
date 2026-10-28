@@ -47,6 +47,20 @@ func (r *PatchTaskRequest) Validate() error {
 
 type PatchUserResponse TaskDTOResponse
 
+// PatchTask godoc
+// @Summary Изменение задачи
+// @Description Изменение информации об уже существующей в системе задачи по его ID
+// @Tags tasks
+// @Accept json
+// @Produce json
+// @Param id path int true "ID изменяемой задачи"
+// @Param request body PatchTaskRequest true "PatchTask тело запроса"
+// @Success 200 {object} PatchUserResponse "Успешно изменённый пользователь"
+// @Failure 400 {object} core_http_response.ErrorResponse "Bad request"
+// @Failure 404 {object} core_http_response.ErrorResponse "User not found"
+// @Failure 409 {object} core_http_response.ErrorResponse "Conflict"
+// @Failure 500 {object} core_http_response.ErrorResponse "Internal server error"
+// @Router /tasks/{id} [patch]
 func (h *TasksHTTPHandler) PatchUser(rw http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	log := core_logger.FromContext(ctx)
